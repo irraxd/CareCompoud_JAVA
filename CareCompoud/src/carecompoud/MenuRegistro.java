@@ -6,6 +6,7 @@
 package carecompoud;
 
 import Scripts.Registrar_Usuario;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,15 +20,75 @@ public class MenuRegistro extends javax.swing.JFrame {
     public MenuRegistro() {
         initComponents();
     }
-    
-    //-------Codigo-------
-    String sUser, sPass, sRePass, sMail;
-    
-        Registrar_Usuario ru = new Registrar_Usuario(null);
-        String[][] users= ru.retornarFichero();
-    
-    //-----End_Codigo-----
 
+    //-----------Codigo-----------
+    String sUser, sPass, sRePass, sMail;
+    int iClase;
+    
+    
+    Registrar_Usuario ru = new Registrar_Usuario(null);
+    String[][] users = ru.retornarFichero();
+    
+    //Métodos
+    public boolean validaMail(String aux)
+    {
+        int count=0;
+        for (int i = 0; i < aux.length(); i++) {
+            
+            if ((aux.charAt(i)+"").equalsIgnoreCase('@'+"")) {
+                count++;
+            }
+
+        }
+      
+        if(count!=1)
+        {
+            return true;
+        }else
+        {
+            return false;
+        }
+    }
+    
+    public boolean validaUser (String aux, String[][] matrix)
+    {
+        boolean var =false;
+        for (int i = 0; i < matrix.length; i++) {
+            
+            if (aux.equalsIgnoreCase(matrix[i][1])) 
+            {
+                var=true;
+            }
+            
+            
+        }
+        
+        
+        
+        return var;
+    }
+    
+    public boolean validaMailExistente(String aux, String[][] matrix)
+    {
+        boolean var =false;
+        for (int i = 0; i < matrix.length; i++) {
+            
+            if (aux.equalsIgnoreCase(matrix[i][3])) 
+            {
+                var=true;
+            }
+            
+            
+        }
+        
+        
+        
+        return var;
+    }
+    
+
+    //---------End_Codigo---------
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -175,20 +236,45 @@ public class MenuRegistro extends javax.swing.JFrame {
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
         // TODO add your handling code here:
-        sUser = txtUsuario.getText();
+        
+        
+        sUser = txtUsuario.getText().trim();
         sPass = txtPass.getText();
         sRePass = txtRepeatPass.getText();
-        sMail = txtMail.getText();
-       
+        sMail = txtMail.getText().trim();
+        iClase = cbxClaseComida.getSelectedIndex();
         
-       
+            
+        if (sUser.equals("") || sPass.equals("") || sRePass.equals("") ||
+            sMail.equals("")) 
+        {
         
-        
-        
-        
-        
-        
-        
+            JOptionPane.showMessageDialog(null,"Debe llenar todos los campos",
+                                          "ERROR" ,JOptionPane.ERROR_MESSAGE);
+
+        }else if(!sPass.contentEquals(sRePass)){
+            JOptionPane.showMessageDialog(null,"Las constraseñas deben ser iguales ",
+                                          "ERROR" ,JOptionPane.ERROR_MESSAGE);
+            
+        } else if (iClase == 0) {
+            
+            JOptionPane.showMessageDialog(null,"Debe elegir una clase de comida",
+                                          "ERROR" ,JOptionPane.ERROR_MESSAGE);
+        }else if(validaMail(sMail)){
+            JOptionPane.showMessageDialog(null,"Debe ingresar un mail correcto",
+                                          "ERROR" ,JOptionPane.ERROR_MESSAGE);
+            
+        }else if(validaUser(sUser, users))
+        {
+            JOptionPane.showMessageDialog(null,"El usuario '"+sUser+"' ya existe",
+                                          "ERROR" ,JOptionPane.ERROR_MESSAGE);
+        }else if (validaMailExistente(sMail, users))
+        {
+            JOptionPane.showMessageDialog(null,"El mail '"+sMail+"' ya se encuentra en uso",
+                                          "ERROR" ,JOptionPane.ERROR_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     /**
