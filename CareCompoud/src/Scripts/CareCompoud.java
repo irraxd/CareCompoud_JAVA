@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package carecompoud;
+package Scripts;
+
 
 /**
  *
@@ -16,6 +17,15 @@ public class CareCompoud {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
+        Registrar_Usuario ru = new Registrar_Usuario(null);
+        String[][] users= ru.retornarFichero();
+        
+        
+        System.out.println(users[0][0]);
+        
+        
+        
     }
-    
+
 }
